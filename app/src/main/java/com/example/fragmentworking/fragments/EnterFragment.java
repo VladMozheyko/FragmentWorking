@@ -17,7 +17,7 @@ import com.example.fragmentworking.models.Model;
 
 import java.util.ArrayList;
 
-public class ChooseFragment extends Fragment {
+public class EnterFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
@@ -40,8 +40,6 @@ public class ChooseFragment extends Fragment {
         ChooseAdapter adapter = new ChooseAdapter(getActivity(), models); // Адаптер для связки списка моделей и разметки
         recyclerView.setAdapter(adapter);  // Назначаем адаптер списку
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity())); // Назначаем менеджер компановки(способ отображения элементов списка)
-
-
 
     }
 }

@@ -12,74 +12,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.fragmentworking.fragments.ChooseFragment;
+import com.example.fragmentworking.fragments.EnterFragment;
+import com.example.fragmentworking.fragments.MainFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    private Button btn;
-    private EditText edt;
-    private TextView txt;
-
-    FragmentManager fragmentManager;
-    Fragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init();             // Привязка разметки к коду
+        Repository.fragmentManager = getSupportFragmentManager();     // Инициализируем менеджер фрагментов
 
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int age = Integer.parseInt(edt.getText().toString());  // Получаем возраст из editText для этого преобразуем(парсим) текст в число
-                try {
-                    boolean access = pass(age);
-                    txt.setText(" " + access);
-                    edt.setText("");
-                    if(access){  // Если получили доступ, запускаем фрагмент
-                        if(fragment != null){     /// Если фрагмент уже отобразился, то удаляем его
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.remove(fragment);
-                            transaction.commit();
-                        }
-                        fragmentManager = getSupportFragmentManager();
-                        fragment = new ChooseFragment();
-                        fragmentManager.beginTransaction()
-                                .add(R.id.fragment_container, fragment)
-                                .commit();
-                    }
-                    else {
-                        if(fragment!= null) {
-                            FragmentTransaction transaction = fragmentManager.beginTransaction();
-                            transaction.remove(fragment);
-                            transaction.commit();
-                        }
-                    }
-
-                }
-                catch (AgeException ex){
-                    Toast.makeText(MainActivity.this, "Вы ввели некорректный возраст", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-    }
-
-    private void init(){
-        btn = findViewById(R.id.btn_age);
-        txt = findViewById(R.id.txt_age);
-        edt = findViewById(R.id.edt_age);
-    }
-
-    private boolean pass(int age) throws AgeException {
-        if(age >= 18){
-            return true;
+        if(Repository.fragment == null){
+            Repository.fragment = new MainFragment();
+            Repository.fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, Repository.fragment)
+                    .commit();
         }
-        else if(age > 0 && age < 18) {
-            return false;
-        }else
-            throw new AgeException("Введен отрицательный возраст");
+
     }
 }
