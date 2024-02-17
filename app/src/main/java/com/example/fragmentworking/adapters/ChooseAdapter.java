@@ -18,6 +18,13 @@ import java.util.ArrayList;
 // Наследуемся внутреннего класса RecyclerView - Adapte, в скобочках привязываем к нему ViewHolder
 public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder> {
 
+    public interface OnItemClickListener{   // Интерфейс для обработки нажатий на элеент спсика
+        void onItemClick(int position);
+    }
+
+    private OnItemClickListener listener; // Экземпляр интерфейса для обработки нажатий на элемент списка
+
+
     private LayoutInflater inflater;          // Создаем поля класса для доступа  ним в пределах класса
 
     private ArrayList<Model> models;
@@ -27,6 +34,15 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
     public ChooseAdapter(Context context, ArrayList<Model> models) {
         this.models = models;
         inflater = LayoutInflater.from(context);
+    }
+
+
+    /**
+     * Слушатель нажатий на элемент списка
+     * @param listener экземпляр интерефейса-слушателя нажатий
+     */
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
     // При создании объекта этот метод создаст ViewHolder
@@ -42,6 +58,14 @@ public class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ViewHolder
         Model model = models.get(position);               // Получаем индекс модели для конкретного элемента списка
         holder.textView.setText(model.getTitle());        // Выводим текст в название элемента списка
         holder.imageView.setImageResource(model.getImg());// Выводим картинку в название элемента списка
+        holder.itemView.setOnClickListener(new View.OnClickListener() { // Добавляем слушателя для всего элемента списка
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(position);
+                }
+            }
+        });
     }
 
     @Override
