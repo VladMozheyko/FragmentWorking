@@ -10,7 +10,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:id="@+id/choose_img"
-        android:src="@drawable/cocktails"/>
+        android:src="@drawable/beverage2"/>
 
     <TextView
         android:layout_width="wrap_content"

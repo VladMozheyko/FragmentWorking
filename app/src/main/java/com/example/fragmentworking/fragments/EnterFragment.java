@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +25,10 @@ public class EnterFragment extends Fragment implements View.OnTouchListener{
 
     private RecyclerView recyclerView;
 
+    private FragmentManager fragmentManager;
+    private Fragment fragment;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -36,7 +41,7 @@ public class EnterFragment extends Fragment implements View.OnTouchListener{
     private void init(View view) {   // Метод для создания начальных значений
         recyclerView = view.findViewById(R.id.list_items);
         ArrayList<Model> models = new ArrayList<>();                 // Список моделей, которые будут выводиться на экран
-        models.add(new Model(R.drawable.cocktails, "Напитки"));
+        models.add(new Model(R.drawable.beverage2, "Напитки"));
         models.add(new Model(R.drawable.menu, "Меню"));
         models.add(new Model(R.drawable.map, "Столики"));
 
@@ -49,6 +54,14 @@ public class EnterFragment extends Fragment implements View.OnTouchListener{
                 if(position == 2){
                     Intent intent = new Intent(getActivity(), MapActivity.class);
                     startActivity(intent);
+                }
+                else if(position == 0){
+                   fragmentManager = getParentFragmentManager(); //  Получаем родительский менеджер фрагментов
+                    fragment = new BeverageFragment();
+                    fragmentManager.beginTransaction()
+                            .addToBackStack("drink")
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
                 }
             }
         });
